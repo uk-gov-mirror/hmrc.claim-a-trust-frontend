@@ -21,13 +21,11 @@ import controllers.routes
 import play.api.Configuration
 import play.api.i18n.{Lang, Messages}
 import play.api.mvc.Call
-import uk.gov.hmrc.hmrcfrontend.config.ContactFrontendConfig
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 @Singleton
 class FrontendAppConfig @Inject() (
   val configuration: Configuration,
-  contactFrontendConfig: ContactFrontendConfig,
   servicesConfig: ServicesConfig
 ) {
 
@@ -37,14 +35,10 @@ class FrontendAppConfig @Inject() (
   lazy val nonTaxableEnrolmentServiceName: String =
     configuration.get[String]("microservice.services.tax-enrolments.non-taxable.serviceName")
 
-  val betaFeedbackUrl =
-    s"${contactFrontendConfig.baseUrl.get}/contact/beta-feedback?service=${contactFrontendConfig.serviceId.get}"
-
   lazy val trustsRegistration: String = configuration.get[String]("urls.trustsRegistration")
-  lazy val authUrl: String            = servicesConfig.baseUrl("auth")
   lazy val loginUrl: String           = configuration.get[String]("urls.login")
   lazy val loginContinueUrl: String   = configuration.get[String]("urls.loginContinue")
-  lazy val logoutUrl: String          = configuration.get[String]("urls.logout")
+  lazy val logoutUrl: String          = s"${configuration.get[String]("urls.logout")}?useServiceNavigation"
 
   lazy val appName: String = configuration.get[String]("appName")
 
